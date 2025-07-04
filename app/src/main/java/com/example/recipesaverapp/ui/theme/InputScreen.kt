@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
@@ -40,8 +42,9 @@ fun InputScreen(onSave: (String, String, String) -> Unit, onCancel: () -> Unit) 
     var name by remember { mutableStateOf("") }
     var ingredients by remember { mutableStateOf("") }
     var preparationSteps by remember { mutableStateOf("") }
+    val scrollState = rememberScrollState()
     Column(
-        modifier = Modifier.padding(24.dp).fillMaxWidth(),
+        modifier = Modifier.padding(24.dp).fillMaxWidth().verticalScroll(scrollState),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -89,7 +92,7 @@ fun InputScreen(onSave: (String, String, String) -> Unit, onCancel: () -> Unit) 
             leadingIcon = { Icon(imageVector = Icons.Default.List, contentDescription = null) },
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-            textStyle = TextStyle(fontSize = 16.sp)
+            textStyle = TextStyle(fontSize = 16.sp),
         )
 
         Spacer(modifier = Modifier.height(48.dp))

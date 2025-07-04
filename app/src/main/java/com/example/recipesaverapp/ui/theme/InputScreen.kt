@@ -22,19 +22,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun InputScreen() {
+fun InputScreen(onSave: (String, String, String) -> Unit, onCancel: () -> Unit) {
+    var name by remember { mutableStateOf("") }
+    var ingredients by remember { mutableStateOf("") }
+    var preparationSteps by remember { mutableStateOf("") }
     Column(
         modifier = Modifier.padding(24.dp).fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
@@ -45,12 +50,13 @@ fun InputScreen() {
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF4CAF50),
-            modifier = Modifier.padding(bottom = 80.dp)
+            modifier = Modifier.padding(top = 20.dp)
         )
+        Spacer(modifier = Modifier.height(200.dp))
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = name,
+            onValueChange = {name = it},
             label = { Text("Recipe Name") },
             placeholder = { Text("Enter Recipe Name") },
             leadingIcon = { Icon(imageVector = Icons.Default.Edit, contentDescription = null) },
@@ -62,8 +68,8 @@ fun InputScreen() {
         Spacer(modifier = Modifier.height(12.dp))
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = ingredients,
+            onValueChange = {ingredients = it},
             label = { Text("Ingredients") },
             placeholder = { Text("Enter List Of Ingredients") },
             leadingIcon = { Icon(imageVector = Icons.Default.Info, contentDescription = null) },
@@ -76,8 +82,8 @@ fun InputScreen() {
 
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = preparationSteps,
+            onValueChange = {preparationSteps = it},
             label = { Text("Preparation Steps") },
             placeholder = { Text("Describe Each Step In Detail") },
             leadingIcon = { Icon(imageVector = Icons.Default.List, contentDescription = null) },
@@ -86,14 +92,14 @@ fun InputScreen() {
             textStyle = TextStyle(fontSize = 16.sp)
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(48.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Button(
-                onClick = { /* Cancel action */ },
+                onClick = { onCancel() },
                 modifier = Modifier.weight(1f).padding(end = 8.dp),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
@@ -107,7 +113,7 @@ fun InputScreen() {
             }
 
             Button(
-                onClick = { /* Save action */ },
+                onClick = { onSave(name, ingredients, preparationSteps) },
                 modifier = Modifier.weight(1f).padding(start = 8.dp),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(

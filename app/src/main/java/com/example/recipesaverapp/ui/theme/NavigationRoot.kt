@@ -1,16 +1,25 @@
 package com.example.recipesaverapp.ui.theme
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.example.recipesaverapp.DisplayScreen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationRoot() {
     val backStack = rememberNavBackStack(DisplayScreenKey)
     val recipeList = remember { mutableStateListOf<RecipeData>() }
+
+    val sheetState = rememberModalBottomSheetState()
+    var isSheetOpen by rememberSaveable { mutableStateOf(false) }
+    val selectedRecipe = remember { mutableStateOf<RecipeData?>(null) }
+
 
     NavDisplay(
         modifier = Modifier,
@@ -21,7 +30,15 @@ fun NavigationRoot() {
                     NavEntry(key) {
                         DisplayScreen(
                             recipes = recipeList,
-                            onAdd = { backStack.add(InputScreenKey) }
+                            onAdd = { backStack.add(InputScreenKey) },
+                            onTap = { recipe ->
+                                selectedRecipe.value = recipe
+                                isSheetOpen = true
+                            },
+                            sheetState = sheetState,
+                            isSheetOpen = isSheetOpen,
+                            onDismissSheet = { isSheetOpen = false },
+                            selectedRecipe = selectedRecipe
                         )
                     }
                 }
